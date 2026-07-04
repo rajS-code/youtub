@@ -1,10 +1,13 @@
+"use client";
+
 import axiosInstance from "@/lib/axiosInstance";
-import { formatDistanceToNow } from "date-fns";
 import { MoreVertical } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 const SearchResults = ({ query }: any) => {
+  const [videos, setVideos] = useState<any[]>([]);
+
   if (!query.trim()) {
     return (
       <div className="text-gray-500 w-full text-center">
@@ -13,14 +16,11 @@ const SearchResults = ({ query }: any) => {
     );
   }
 
-  const [videos, setVideos] = useState<any[]>([]);
-
   const fetchSearchResults = async () => {
-
-    const res = await axiosInstance.get("/video/getall"); 
+    const res = await axiosInstance.get("/video/getall");
 
     let results = res.data.filter(
-      (video:any) =>
+      (video: any) =>
         video.videotitle?.toLowerCase().includes(query.toLowerCase()) ||
         video.videochannel?.toLowerCase().includes(query.toLowerCase()),
     );
